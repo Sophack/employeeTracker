@@ -34,24 +34,3 @@ CREATE TABLE employee (
 
 -- need to add a foreign key?
 
--- GETTING THE FOLLOWING ERROR
--- Running on a local VS Code session.
--- Starting embedded MySQL Shell, using config dir 'C:\Users\saraf\AppData\Roaming\MySQL\mysqlsh-gui' ...
--- Please enter the single instance token: 
--- 15:25:11.239992 INFO: Token read from STDIN
-
--- 15:25:11.279981 INFO: Starting MySQL Shell GUI web server...
-
--- 15:25:11.282980 INFO: 	Checking web server certificate...
-
--- 15:25:11.550975 INFO: 	Certificate is installed.
-
--- 15:25:11.630435 INFO: 	Port: 33336
-
--- 15:25:11.631627 INFO: 	Secure: True
-
--- 15:25:11.631998 INFO: 	Webroot: c:\Users\saraf\.vscode\extensions\oracle.mysql-shell-for-vs-code-1.6.2-win32-x64\shell\lib\mysqlsh\plugins\gui_plugin\core\webroot
-
--- 15:25:11.634015 INFO: 	Mode: Single user
-
--- Could not establish websocket connection: Unexpected server response: 400
