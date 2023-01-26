@@ -1,11 +1,11 @@
-const util = require("util");
+const util = require("./questions");
 const mysql = require("mysql");
 
 const connection = mysql.createConnection({
   host: "localhost",
-  // Your username
+  // username
   user: "root",
-  // Your password
+  // password
   password: "root",
   database: "employee_db",
 });

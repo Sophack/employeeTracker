@@ -1,6 +1,7 @@
 const connection = require("./assets/js/connection");
 const inquirer = require("inquirer");
 const questions = require("./assets/js/questions");
+require('console.table');
 
 // const config = require('./package.json');
 // console.log(logo(config).render());
