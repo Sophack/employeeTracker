@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Sophack/employeeTracker/issues"
   },
-  "homepage": "https://github.com/Sophack/employeeTracker#readme"
+  "homepage": "https://github.com/Sophack/employeeTracker#readme",
+  "dependencies": {
+    "inquirer": "^9.1.4"
+  }
 }
