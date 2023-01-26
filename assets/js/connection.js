@@ -1,19 +1,17 @@
-const util = require("./questions");
 const mysql = require("mysql");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  // username
-  user: "root",
-  // password
-  password: "root",
-  database: "employee_db",
+
+let connection = mysql.createConnection({
+	
+	host: "localhost",
+	port: 3306,
+	user: "root",
+	password: "",
+	database: "employee_db",
 });
 
-connection.connect();
-
-// setting up connection.query to use promises instead of callbacks
-
-connection.query = util.promisify(connection.query);
+connection.connect(function (err) {
+	if (err) throw err;
+});
 
 module.exports = connection;
