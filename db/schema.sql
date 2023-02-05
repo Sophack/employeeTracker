@@ -18,8 +18,8 @@ CREATE TABLE role (
 -- rows will hold null values so it can be changed/updated without adding to the field
     title VARCHAR(100) NULL,
     salary DECIMAL NOT NULL,
-    dept_id INT REFERENCES department.id, 
-    PRIMARY KEY (id)
+    dept_id INTEGER,
+  CONSTRAINT fk_department FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE SET NULL
 ); 
 
 CREATE TABLE employee ( 
@@ -27,9 +27,10 @@ CREATE TABLE employee (
     id NOT NULL AUTO_INCREMENT, 
     first_name VARCHAR(100) NULL, 
     last_name VARCHAR (100) NULL, 
-    role_id INT REFERENCES role.id 
-    manager_id INT,
-    PRIMARY KEY (id)
+    role_id INTEGER,
+  manager_id INTEGER,
+  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE SET NULL,
+  CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
 
 -- need to add a foreign key?
