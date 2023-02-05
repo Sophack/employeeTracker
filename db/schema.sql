@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS employee_db; 
+DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS employee;
 
--- creating a database called employee_db; 
 
-USE employee_db;
 CREATE TABLE department(
     -- setting the id and name columns
     id INT NOT NULL AUTO_INCREMENT,

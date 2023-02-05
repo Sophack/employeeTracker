@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Sophack/employeeTracker#readme",
   "dependencies": {
-    "inquirer": "^9.1.4"
+    "inquirer": "^9.1.4",
+    "sequelize": "^6.28.0"
   }
 }
