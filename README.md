@@ -20,6 +20,7 @@ In order to get this application working please install the following dependenci
 - NPM 
 - Inquirer.js
 - MySql2
+- Console.table
 
 
 ## Usage

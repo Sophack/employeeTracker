@@ -1,5 +1,7 @@
--- values for the department table 
- 
+USE employee_db; 
+
+-- values for the department 
+
 INSERT INTO department
     (name)
 VALUES
@@ -9,24 +11,23 @@ VALUES
     ('Sales');
 
 -- values for the role table 
-INSERT INTO department 
-    (title, salary, dept_id) 
+
+INSERT INTO role
+    (title, salary, department_id) 
 VALUES 
-    ('Engineer', 120000, 1);
-    ('Lead Engineer', 150000, 1);
-
-    ('Lawyer', 190000, 2);
-    ('Legal Team Lead', 250000, 2);
-
-    ('Salesperson', 80000, 3); 
-    ('Sales Lead', 100000, 3);
-    
-    ('Accountant', 125000, 4);
+    ('Engineer', 120000, 1),
+    ('Lead Engineer', 150000, 1),
+    ('Lawyer', 190000, 2),
+    ('Legal Team Lead', 250000, 2),
+    ('Salesperson', 80000, 3),
+    ('Sales Lead', 100000, 3),
+    ('Accountant', 125000, 4),
     ('Account Manager', 160000, 4);
     
 
 
 -- values for the employee table
+
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
 VALUES
