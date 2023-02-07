@@ -275,6 +275,10 @@ const promptAddEmployee = (roles) => {
         })
 }
 
+//needs to have a list of roles & employees 
+//need to update the role of an existing employee 
+//use update/insert 
+
 const promptUpdateRole = () => {
 
     return connection.promise().query(
@@ -350,4 +354,3 @@ const promptUpdateRole = () => {
 
 };
 
-promptMenu();
