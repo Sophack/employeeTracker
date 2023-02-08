@@ -32,7 +32,7 @@ const promptMenu = () => {
             'add a department',
             'add a role',
             'add an employee', 
-            'update an employee role', 
+            'update an employees role', 
             'exit']
         }])
 
@@ -59,7 +59,7 @@ const promptMenu = () => {
                     promptAddEmployee();
                     break;
                 case 'update an employee role':
-                    promptUpdateRole();
+                    promptUpdateEmployeeRole();
                     break;
 
             //exit option
@@ -279,78 +279,60 @@ const promptAddEmployee = (roles) => {
 //need to update the role of an existing employee 
 //use update/insert 
 
-const promptUpdateRole = () => {
+const promptUpdateEmployeeRole = (employees) => {
 
+    
     return connection.promise().query(
-        "SELECT R.id, R.title, R.salary, R.department_id FROM role R;"
+        "SELECT E.id, E.first_name FROM employee E;"
     )
-        .then(([roles]) => {
-            let roleChoices = roles.map(({
+        .then(([employees]) => {
+            let employeeChoices = employees.map(({
                 id,
-                title
-
+                first_name
+            
             }) => ({
                 value: id,
-                name: title
-            }));
+                name: first_name
+            }
+            ));
 
             inquirer.prompt(
                 [
                     {
                         type: 'list',
-                        name: 'role',
-                        message: 'Which role do you want to update?',
-                        choices: roleChoices
+                        name: 'employee',
+                        message: 'Which employee role do you want to update?',
+                        choices: employeeChoices
                     }
                 ]
-            )
-                .then(role => {
-                    console.log(role);
+                        )
+                .then(employee => {
+                    connection.promise().query(
+                    "SELECT R.id, R.title FROM role R;"
+                    ) 
+                    .then(role => {
+                        let roleChoices = role.map(( {
+                            id, 
+                            title
+                          }) => ({
+                            value: id,
+                            name: title
+                            })
+                             )
+                        
+                    console.log(employee);
                     inquirer.prompt(
-                        [{
-                            type: 'input',
-                            name: 'title',
-                            message: 'Enter the name of your title (Required)',
-                            validate: titleName => {
-                                if (titleName) {
-                                    return true;
-                                } else {
-                                    console.log('Please enter your title name!');
-                                    return false;
-                                }
-                            }
-                        },
                         {
-                            type: 'input',
-                            name: 'salary',
-                            message: 'Enter your salary (Required)',
-                            validate: salary => {
-                                if (salary) {
-                                    return true;
-                                } else {
-                                    console.log('Please enter your salary!');
-                                    return false;
-                                }
-                            }
-                        }]
-                    )
-                        .then(({ title, salary }) => {
-                            const query = connection.query(
-                                'UPDATE role SET title = ?, salary = ? WHERE id = ?',
-                                [
-                                    title,
-                                    salary
-                                    ,
-                                    role.role
-                                ],
-                                function (err, res) {
-                                    if (err) throw err;
-                                }
-                            )
-                        })
+                            type: 'list',
+                            name: 'role',
+                            message: 'Which employee title should be updated?',
+                            choices: roleChoices
+                        } )
+                //instead of promptMenu it should be a function that returns the chosen employee's title 
                         .then(() => promptMenu())
+                    })
                 })
-        });
+                
+        })
 
 };
-
