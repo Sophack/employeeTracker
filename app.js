@@ -4,14 +4,15 @@ const inquirer = require('inquirer');
 const fs = require("fs");
 const mysql = require('mysql2');
 require('console.table');
+require('dotenv').config();
 
 // create the connection to database
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     port: '3306',
     database: 'employee_db',
-    password: 'password'
+    password: process.env.PASSWORD,
 })
 
 connection.connect( (err) => {
@@ -26,13 +27,17 @@ const promptMenu = () => {
             type: 'list',
             name: 'menu',
             message: 'What would you like to do?',
-            choices: ['view all departments', 
+            choices: [
+            'view all departments', 
             'view all roles', 
             'view all employees', 
             'add a department',
             'add a role',
             'add an employee', 
-            'update an employees role', 
+            'delete a department',
+            'delete a role',
+            'delete an employee',
+            'update an employee role', 
             'exit']
         }])
 
@@ -58,8 +63,17 @@ const promptMenu = () => {
                 case 'add an employee':
                     promptAddEmployee();
                     break;
+                case 'delete a department':
+                    deleteDepartment();
+                    break;
+                case 'delete a role': 
+                    deleteRole();
+                    break;    
+                case 'delete an employee':
+                    deleteEmployee();
+                    break;
                 case 'update an employee role':
-                    promptUpdateEmployeeRole();
+                    updateEmployeeRole();
                     break;
 
             //exit option
@@ -275,64 +289,72 @@ const promptAddEmployee = (roles) => {
         })
 }
 
-//needs to have a list of roles & employees 
-//need to update the role of an existing employee 
-//use update/insert 
 
-const promptUpdateEmployeeRole = (employees) => {
+function updateEmployeeRole() {
+    db.findAllEmployees()
+      .then(([rows]) => {
+        let employees = rows;
+        const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+          name: `${first_name} ${last_name}`,
+          value: id
+        }));
+  
+        prompt([
+          {
+            type: "list",
+            name: "employeeId",
+            message: "Which employee's role do you want to update?",
+            choices: employeeChoices
+          }
+        ])
+          .then(res => {
+            let employeeId = res.employeeId;
+            db.findAllRoles()
+              .then(([rows]) => {
+                let roles = rows;
+                const roleChoices = roles.map(({ id, title }) => ({
+                  name: title,
+                  value: id
+                }));
+  
+                prompt([
+                  {
+                    type: "list",
+                    name: "roleId",
+                    message: "Which role do you want to assign the selected employee?",
+                    choices: roleChoices
+                  }
+                ])
+                  .then(res => db.updateEmployeeRole(employeeId, res.roleId))
+                  .then(() => console.log("Updated employee's role"))
+                  .then(() => loadMainPrompts())
+              });
+          });
+      })
+  }
 
-    
-    return connection.promise().query(
-        "SELECT E.id, E.first_name FROM employee E;"
-    )
-        .then(([employees]) => {
-            let employeeChoices = employees.map(({
-                id,
-                first_name
-            
-            }) => ({
-                value: id,
-                name: first_name
-            }
-            ));
 
-            inquirer.prompt(
-                [
-                    {
-                        type: 'list',
-                        name: 'employee',
-                        message: 'Which employee role do you want to update?',
-                        choices: employeeChoices
-                    }
-                ]
-                        )
-                .then(employee => {
-                    connection.promise().query(
-                    "SELECT R.id, R.title FROM role R;"
-                    ) 
-                    .then(role => {
-                        let roleChoices = role.map(( {
-                            id, 
-                            title
-                          }) => ({
-                            value: id,
-                            name: title
-                            })
-                             )
-                        
-                    console.log(employee);
-                    inquirer.prompt(
-                        {
-                            type: 'list',
-                            name: 'role',
-                            message: 'Which employee title should be updated?',
-                            choices: roleChoices
-                        } )
-                //instead of promptMenu it should be a function that returns the chosen employee's title 
-                        .then(() => promptMenu())
-                    })
-                })
-                
-        })
+// BONUS FEATURES 
 
-};
+function deleteEmployee() {
+    db.findAllEmployees()
+      .then(([rows]) => {
+        let employees = rows;
+        const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+          name: `${first_name} ${last_name}`,
+          value: id
+        }));
+  
+        prompt([
+          {
+            type: "list",
+            name: "employeeId",
+            message: "which employee do you want to remove?",
+            choices: employeeChoices
+          }
+        ])
+          .then(res => db.removeEmployee(res.employeeId))
+          .then(() => console.log("employee deleted"))
+          .then(() => promptMenu())
+      })
+  }
