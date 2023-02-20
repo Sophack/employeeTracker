@@ -60,4 +60,7 @@ Follow me for more projects!
 
 ## **Functionality video** 
 
-[Click here to see the functionality!](https://github.com/Sophack/employeeTracker/blob/main/assets/employeeTrackerVid.webm)
+[Link to location of file in repo](https://github.com/Sophack/employeeTracker/blob/main/assets/employeeTrackerVid.webm)
+
+
+[Video preview:](https://user-images.githubusercontent.com/114966651/220198326-5366abe1-3ae6-4b64-8ce4-5c19e937a700.webm)
