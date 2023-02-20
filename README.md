@@ -35,6 +35,8 @@ After running the command, it should present the user with the following options
 
 ![first page of node app.js](/assets/defaultView.png)
 
+***Similarly, the user is able to perform the other functions: add a department/role/employee, delete a department/role/employee & update an employee role. ***
+
 ## **Contributors**
 To contribute to Employee Tracker, clone this repo locally and commit your code on a separate branch.
   
@@ -58,3 +60,4 @@ Follow me for more projects!
 
 ## **Functionality video** 
 
+[Click here to see the functionality!](https://github.com/Sophack/employeeTracker/blob/main/assets/employeeTrackerVid.webm)
