@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const fs = require("fs");
 const mysql = require('mysql2');
 require('console.table');
-require('dotenv').config();
+// require('dotenv').config();
 
 // create the connection to database
 const connection = mysql.createConnection({
@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
     user: 'root',
     port: '3306',
     database: 'employee_db',
-    password: process.env.PASSWORD,
+    password: 'password',
 })
 
 connection.connect( (err) => {
@@ -35,7 +35,6 @@ const promptMenu = () => {
             'add a role',
             'add an employee', 
             'delete a department',
-            'delete a role',
             'delete an employee',
             'update an employee role', 
             'exit']
@@ -65,10 +64,7 @@ const promptMenu = () => {
                     break;
                 case 'delete a department':
                     deleteDepartment();
-                    break;
-                case 'delete a role': 
-                    deleteRole();
-                    break;    
+                    break;  
                 case 'delete an employee':
                     deleteEmployee();
                     break;
@@ -288,10 +284,27 @@ const promptAddEmployee = (roles) => {
             })
         })
 }
+  // Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
+ function findAllEmployees() {
+    return connection.promise().query(
+      "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
+    );
+  }
+function findAllRoles() {
+    return connection.promise().query(
+      "SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;"
+    );
+  }
 
+function updateEmployeeRole0(employeeId, roleId) {
+    return connection.promise().query(
+      "UPDATE employee SET role_id = ? WHERE id = ?",
+      [roleId, employeeId]
+    );
+  }
 
 function updateEmployeeRole() {
-    db.findAllEmployees()
+    findAllEmployees()
       .then(([rows]) => {
         let employees = rows;
         const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
@@ -299,7 +312,7 @@ function updateEmployeeRole() {
           value: id
         }));
   
-        prompt([
+        inquirer.prompt([
           {
             type: "list",
             name: "employeeId",
@@ -309,7 +322,7 @@ function updateEmployeeRole() {
         ])
           .then(res => {
             let employeeId = res.employeeId;
-            db.findAllRoles()
+            findAllRoles()
               .then(([rows]) => {
                 let roles = rows;
                 const roleChoices = roles.map(({ id, title }) => ({
@@ -317,7 +330,7 @@ function updateEmployeeRole() {
                   value: id
                 }));
   
-                prompt([
+                inquirer.prompt([
                   {
                     type: "list",
                     name: "roleId",
@@ -325,9 +338,9 @@ function updateEmployeeRole() {
                     choices: roleChoices
                   }
                 ])
-                  .then(res => db.updateEmployeeRole(employeeId, res.roleId))
+                  .then(res => updateEmployeeRole0(employeeId, res.roleId))
                   .then(() => console.log("Updated employee's role"))
-                  .then(() => loadMainPrompts())
+                  .then(() => promptMenu())
               });
           });
       })
@@ -335,9 +348,19 @@ function updateEmployeeRole() {
 
 
 // BONUS FEATURES 
+//using Mysql so we need to establish connection 
+
+function removeEmployee(employeeId) {
+    return connection.promise().query(
+        "DELETE FROM employee WHERE id = ?",
+        employeeId
+      );
+    }
+
+//this is a local function so no need mysql connection 
 
 function deleteEmployee() {
-    db.findAllEmployees()
+    findAllEmployees()
       .then(([rows]) => {
         let employees = rows;
         const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
@@ -345,7 +368,7 @@ function deleteEmployee() {
           value: id
         }));
   
-        prompt([
+        inquirer.prompt([
           {
             type: "list",
             name: "employeeId",
@@ -353,8 +376,49 @@ function deleteEmployee() {
             choices: employeeChoices
           }
         ])
-          .then(res => db.removeEmployee(res.employeeId))
+        //local function so no need to add connection
+          .then(res => removeEmployee(res.employeeId))
           .then(() => console.log("employee deleted"))
+          .then(() => promptMenu())
+      })
+  }
+
+
+
+  // Remove a department
+function removeDepartment(departmentId) {
+    return connection.promise().query(
+      "DELETE FROM department WHERE id = ?",
+      departmentId
+    );
+  }
+
+    // Find all departments
+function findAllDepartments() {
+        return connection.promise().query(
+          "SELECT department.id, department.name FROM department;"
+        );
+      }
+
+  // Delete a department
+function deleteDepartment() {
+    findAllDepartments()
+      .then(([rows]) => {
+        let departments = rows;
+        const departmentChoices = departments.map(({ id, name }) => ({
+          name: name,
+          value: id
+        }));
+  
+        inquirer.prompt({
+          type: "list",
+          name: "departmentId",
+          message:
+            "Which department would you like to remove? (Warning: This will also remove associated roles and employees)",
+          choices: departmentChoices
+        })
+          .then(res => removeDepartment(res.departmentId))
+          .then(() => console.log(`department deleted`))
           .then(() => promptMenu())
       })
   }

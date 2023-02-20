@@ -1,9 +1,9 @@
-# Employee Tracker App
+# **Employee Tracker App**
 
-## Description
-This CLI application keeps track of employees in a database. This is useful for business owners who want to organize and manage employees.
+## **Description**
+This CLI application keeps track of employees in a database with the help of **Node.js, Inquirer & MySQL**. It is an interface that allows for non-developers to easily view and interact with information stored in databases. Business owners who want to organize and manage employees can benefit from this. 
 
-## Table of Contents
+## **Table of Contents**
 - [Description](#description)
 - [User Story](#user-story)
 - [Acceptance Criteria](#acceptance-criteria)
@@ -14,7 +14,7 @@ This CLI application keeps track of employees in a database. This is useful for 
 - [Technology Used](#technology-used)
 - [Questions](#questions)
 
-## Installation
+## **Installation**
 
 In order to get this application working please install the following dependencies: 
 - NPM 
@@ -22,26 +22,39 @@ In order to get this application working please install the following dependenci
 - MySql2
 - Console.table
 
+After installing the dependencies, run ```node app.js``` in the command line.
 
-## Usage
 
+## **Usage**
+After running the command, it should present the user with the following options that can be scrolled through: 
 
-## Contributors
+![options to scroll through](/assets/allOptions.jpg)
+![options to scroll through](/assets/allOptions2.jpg)
+
+***For example, choosing to view all departments, roles and employees looks like this:*** 
+
+![first page of node app.js](/assets/defaultView.png)
+
+## **Contributors**
 To contribute to Employee Tracker, clone this repo locally and commit your code on a separate branch.
   
 Please follow standard guidelines at: [Contributor Covenant](https://www.contributor-covenant.org/) 
 
-## License 
+## **License** 
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-## Technology Used
+## **Technology Used**
 - JavaScript
 - Node.js
 - MySql2
+- Inquirer 
 
-## Questions
+## **Questions**
 
 My Github username is sophack, which can be accessed [here](https://github.com/Sophack)
 
 Follow me for more projects!
+
+## **Functionality video** 
+
